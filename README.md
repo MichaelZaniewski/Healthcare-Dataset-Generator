@@ -52,6 +52,9 @@ Automatic checks (saved to `validation_report.txt`):
 1. Install Python
    - Download & install Python (includes pip): https://www.python.org/downloads/
    - On windows installer: check "Add Python to PATH"
-
+   - Once installed, verify by opening Command Prompt or Terminal and typing:
+    ```
+    python --version
+    ```
 2. Get
 
