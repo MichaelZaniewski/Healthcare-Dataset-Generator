@@ -1,7 +1,16 @@
 # Healthcare-Dataset-Generator
-A Python-based generator that creates unique relational healthcare datasets for analytics and machine learning. The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations — 
-with **no real or sensitive data**. Each run is randomized under strict rules, so **no two datasets are identical**.
+A Python-based generator that creates unique relational healthcare datasets for analytics and machine learning. 
 
+
+The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations —  with **no real or sensitive data**. Each run is randomized under strict rules, so **no two datasets are identical**. It models **Patients**, **Visits**, and **Billing** with dynamic logic for severity, follow-ups, and payment behavior — ensuring every run produces a unique, validated dataset ready for SQL or Tableau analysis.
+
+
+## Key Features
+- Multi-table relational design (**patients**, **visits**, **billing**) with strict PK/FK consistency
+- Realistic clinical logic: condition gating, LOS rules, same-day probabilities, follow-up inheritance (doctor/hospital)
+- Billing realism: charges scale by condition/severity/LOS; payment plans & deterministic statuses
+- Tunable parameters for same-day discharges, randomness, and reproducibility
+- Built-in validator produces a summary report
 
 
 ## Dataset Logic
@@ -40,4 +49,9 @@ Automatic checks (saved to `validation_report.txt`):
 
 
 ## How to Run
-Install Python
+1. Install Python
+   - Download & install Python (includes pip): https://www.python.org/downloads/
+   - On windows installer: check "Add Python to PATH"
+
+2. Get
+
