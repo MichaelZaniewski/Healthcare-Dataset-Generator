@@ -59,6 +59,7 @@ Automatic checks (saved to `validation_report.txt`):
        python --version
        ```
 2. Download the Generator
+   - For the download, clock [here](DWONLOAD HERRE}
    - Save the generator file (for example healthcare_dataset_generator.py) to a folder on your computer
 
 4. Install Required Libraries
