@@ -53,8 +53,25 @@ Automatic checks (saved to `validation_report.txt`):
    - Download & install Python (includes pip): https://www.python.org/downloads/
    - On windows installer: check "Add Python to PATH"
    - Once installed, verify by opening Command Prompt or Terminal and typing:
-    ```
-    python --version
-    ```
-2. Get
+       ```
+       python --version
+       ```
+2. Download the Generator
+  - Save the generator file (for example healthcare_dataset_generator.py) to a folder on your computer
 
+3. Install Required Libraries
+   - Open a terminal or Command Prompt in that folder and run:
+       ```
+       pip install pandas numpy faker
+       ```
+4. Run a Small Test Sample
+   - To generate a quick 10-patient sample with validation:
+       ```
+       python healthcare_dataset_generator.py --patients 10 --validate --outdir ./_out
+       ```
+5. Increase the Dataset Size
+   - For larger dataset generation: 
+       ```
+       python healthcare_dataset_generator.py --patients 50000 --minor-same-day-rate 0.6 --validate --outdir ./_out
+       ```
+   - Note: You can customize the amount of patients and the rate of same-day discharges for minor conditions. Keep in mind that an adjustment to patient count (Patient table) has an exponential impact on the Visit and Billing tables because its a one-to-many relationship. For instance, a 50K patient table may generate 225K records in both the Visit and Billing tables.
