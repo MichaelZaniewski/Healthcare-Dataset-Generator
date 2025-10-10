@@ -75,3 +75,9 @@ Automatic checks (saved to `validation_report.txt`):
        python healthcare_dataset_generator.py --patients 50000 --minor-same-day-rate 0.6 --validate --outdir ./_out
        ```
    - Note: You can customize the amount of patients and the rate of same-day discharges for minor conditions. Keep in mind that an adjustment to patient count (Patient table) has an exponential impact on the Visit and Billing tables because its a one-to-many relationship. For instance, a 50K patient table may generate 225K records in both the Visit and Billing tables.
+6. View the Results
+   - Your output folder will contain
+     - heaelthcare_patients.csv
+     - healthcare_visits.csv
+     - healthcare_billing.csv
+     - validation_report.txt
