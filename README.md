@@ -15,7 +15,14 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
 - Built-in validator produces a summary report
 
 
+Utilizes real US zipcodes for easy mapping in Tableau for an additionnal layer of analytical opportunity. 
+
+
 ## Dataset Logic
+## Zipcodes
+- Patient zipcodes must match state
+- The hospital a patient belongs to is in the same state as their address 
+- A Hospital must have only one zipcode
 
 ### LOS & Severity
 - LOS ranges by condition category (minor/acute/chronic/complex)
