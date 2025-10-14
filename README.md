@@ -67,7 +67,7 @@ Automatic checks (saved to `validation_report.txt`):
        ```
 2. Download the Generator
    - For the download, click [here](DWONLOAD HERRE}
-   - Save the generator file (for example healthcare_dataset_generator.py) to a folder on your computer
+   - Place the generator folder on your desktop.
 
 4. Install Required Libraries
    - Open a terminal or Command Prompt in that folder and run:
@@ -75,17 +75,17 @@ Automatic checks (saved to `validation_report.txt`):
        pip install pandas numpy faker
        ```
 5. Run a Small Test Sample
-   - To generate a quick 10-patient sample with validation:
+   - To generate a quick 100-patient sample, use this (make sure to input the date!):
        ```
-       python healthcare_dataset_generator.py --patients 10 --validate --outdir ./_out
+       python healthcare_dataset_generator.py   --patients 100   --today YYYY-MM-DD   --zip-target 10   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\out"
        ```
-6. Increase the Dataset Size
-   - For larger dataset generation: 
+7. Increase the Dataset Size
+   - For larger dataset generation: Patient count, todays date, and distinct zipcode fields are all customizable. Change at will.
        ```
-       python healthcare_dataset_generator.py --patients 50000 --minor-same-day-rate 0.6 --validate --outdir ./_out
+       python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\out"
        ```
-   - Note: You can customize the amount of patients and the rate of same-day discharges for minor conditions. Keep in mind that an adjustment to patient count (Patient table) has an exponential impact on the Visit and Billing tables because its a one-to-many relationship. For instance, a 50K patient table may generate 225K records in both the Visit and Billing tables.
-7. View the Results
+   - Note: Keep in mind that an adjustment to patient count (Patient table) has an exponential impact on the Visit and Billing tables because its a one-to-many relationship. For instance, a 50K patient table may generate 225K records in both the Visit and Billing tables.
+8. View the Results
    - Your output folder will contain
      - heaelthcare_patients.csv
      - healthcare_visits.csv
