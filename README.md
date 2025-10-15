@@ -5,29 +5,28 @@
 A Python-based generator that creates unique relational healthcare datasets for analytics and machine learning. 
 
 ## Background and Overview
-The U.S. healthcare system generates massive volumes of data spanning patients, treatments, and billing — yet real datasets are often inaccessible due to privacy laws like HIPAA. This project was created to bridge that gap by providing a safe, realistic environment for healthcare analytics and data visualization.
+The U.S. healthcare system generates massive volumes of data spanning patients, treatments, and billing but real datasets are often inaccessible due to privacy laws like HIPAA. This project was created to bridge that gap by providing a safe, realistic environment for healthcare analytics and data visualization.
 
-The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations —  with **no real or sensitive data**. Each run is randomized under strict rules, so **no two datasets are identical**. It models **Patients**, **Visits**, and **Billing** with dynamic logic for severity, follow-ups, and payment behavior — ensuring every run produces a unique, validated dataset ready for SQL or Tableau analysis.
+The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations —  with **no real or sensitive data**. Each run is randomized under strict rules, so **no two datasets are identical**. It models `Patients`, `Visits`, and `Billing` tables with dynamic logic for severity, follow-ups, and payment behavior, ensuring every run produces a unique, validated dataset ready for SQL or Tableau analysis.
 
-
-The dataset includes some intentional data formatting errors to simulate messy data, though not much effort was put into this as the dataset is intended to be mostly analysis ready
 
 ## Key Features
-- Multi-table relational design (**patients**, **visits**, **billing**) with strict PK/FK consistency
-- Realistic clinical logic: condition gating, LOS rules, same-day probabilities, follow-up inheritance (doctor/hospital)
-- Billing realism: charges scale by condition/severity/LOS; payment plans & deterministic statuses
-- Tunable parameters for same-day discharges, randomness, and reproducibility
-- Built-in validator produces a summary report
-
-
-Utilizes real US zipcodes for easy mapping in Tableau for an additionnal layer of analytical opportunity. 
+- Multi-table relational design (`patients`, `visits`, `billing`) with strict PK/FK consistency.
+- Realistic clinical logic: condition gating, LOS rules, same-day probabilities, follow-up inheritance (doctor/hospital).
+- Billing realism: charges scale by condition/severity/LOS; payment plans & deterministic statuses.
+- Tunable parameters for patient count, dates, distinct zipcode count, and seed generation number. 
+- Utilizes real US zipcodes for easy mapping in Tableau for an additionnal layer of analytical opportunity.
+- Includes some intentional data formatting errors to simulate messy data, though not much effort was put into this as the dataset is intended to be mostly analysis ready.
+- Employes a built-in validator that produces a summary report after generation to ensure logic is adheared to.
 
 
 ## Dataset Logic
 ## Zipcodes
-- Patient zipcodes must match state
-- The hospital a patient belongs to is in the same state as their address 
-- A Hospital must have only one zipcode
+- Patient zipcodes must match state they blong to.
+- The hospital a patient belongs to is in the same state as their own. 
+- A Hospital must have only one zipcode.
+- Every patient must be assigned a hospital.
+- Subsequently, the zipcode count during generation affects quantity of hospitals.
 
 ### LOS & Severity
 - LOS ranges by condition category (minor/acute/chronic/complex)
