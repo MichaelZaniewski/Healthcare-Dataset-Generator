@@ -7,6 +7,8 @@ The U.S. healthcare system generates massive volumes of data spanning patients, 
 The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations —  with **no real or sensitive data**. Each run is randomized under strict rules, so **no two datasets are identical**. It models **Patients**, **Visits**, and **Billing** with dynamic logic for severity, follow-ups, and payment behavior — ensuring every run produces a unique, validated dataset ready for SQL or Tableau analysis.
 
 
+The dataset includes some intentional data formatting errors to simulate messy data, though not much effort was put into this as the dataset is intended to be mostly analysis ready
+
 ## Key Features
 - Multi-table relational design (**patients**, **visits**, **billing**) with strict PK/FK consistency
 - Realistic clinical logic: condition gating, LOS rules, same-day probabilities, follow-up inheritance (doctor/hospital)
