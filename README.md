@@ -96,3 +96,7 @@ Automatic checks (saved to `validation_report.txt`):
      - visits.csv
      - billing.csv
      - validation_summary.json
+    
+    More info:
+   you can add a --seed clause
+   seed defaults to 42
