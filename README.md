@@ -70,7 +70,7 @@ Automatic checks (saved to `validation_report.txt`):
    - You should get a response showing the version of Python you are running.
     
 2. Download the Generator Folder:
-   - For the download, click [here](DWONLOAD HERRE}.
+   - For the download, click [here](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/releases/tag/v1.0).
    - Place the folder on your desktop.
 
 4. Install Required Libraries
