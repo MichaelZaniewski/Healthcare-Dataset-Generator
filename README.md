@@ -100,3 +100,4 @@ Automatic checks (saved to `validation_report.txt`):
     More info:
    you can add a --seed clause
    seed defaults to 42
+keying in the same patient count, zip count, date, and seed as someone else will produce the same dataset.
