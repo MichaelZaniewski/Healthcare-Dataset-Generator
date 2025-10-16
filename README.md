@@ -9,7 +9,6 @@ The U.S. healthcare system generates massive volumes of data spanning patients, 
 
 The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations —  with **no real or sensitive data**. Each run is randomized under strict rules, so **no two datasets are identical**. It models `Patients`, `Visits`, and `Billing` tables with dynamic logic for severity, follow-ups, and payment behavior, ensuring every run produces a unique, validated dataset ready for SQL or Tableau analysis.
 
-
 ## Key Features
 - Multi-table relational design (`patients`, `visits`, `billing`) with strict PK/FK consistency.
 - Realistic clinical logic: condition gating, LOS rules, same-day probabilities, follow-up inheritance (doctor/hospital).
@@ -39,7 +38,6 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
   - Visit counts vary by condition/severity; **LOS** bounded by condition-specific ranges.
   - **Same-day discharges** are probabilistic and concentrated in mild/minor cases (tunable).
   - Follow-up LOS trends short (≤2 days).
-  - Final column order in **Visits** normalizes hospital fields: `hospital → hospital_state → hospital_zipcode → room_number`.
 
 ### Billing & Payments (strict 1:1 with Visits)
   - Each visit generates exactly **one** billing record with charges, insurance coverage, and patient responsibility.
@@ -52,13 +50,6 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
   - Insurance effects: coverage % and payment risk.
   - Seed-driven randomness (`--seed`) for reproducible yet varied datasets.
 
-### Export & File Hygiene
-  - Post-generation normalizations (non-destructive):
-    - **Patients:** `city` placed immediately after `address`.
-    - **Visits:** `date_of_birth` removed (lives in Patients); hospital fields ordered as above.
-    - **Billing:** `name` removed to avoid dimension duplication.
-  - CSVs are Postgres-friendly (ISO-like `YYYY/MM/DD`) with stable column order.
-
 ### Validation
   - Automatic checks (printed and saved to **`validation_summary.json`**):
     - ID uniqueness; **Visits↔Billing 1:1** mapping.
@@ -66,7 +57,6 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
     - Insurance rule: no policy without provider.
     - Follow-up consistency (doctor/hospital; LOS ≤2).
     - Date sanity (no future/invalid dates relative to `--today`).
-
 
 
 ## How to Run
@@ -82,6 +72,7 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
 2. Download the Generator Folder:
    - For the download, click [here](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/releases/tag/v1.0).
    - Place the folder on your desktop.
+   - Whats in the folder: The .py generator and a .csv of US zipcodes (essential for large dataset creation) 
 
 4. Install Required Libraries
    - Open a terminal or Command Prompt in that folder and run:
@@ -107,7 +98,7 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
      - billing.csv
      - validation_summary.json
     
-### -- Seed Input
+### Seed Input
 - You can add a --seed clause in the generation code to regenerate a dataset previously created.
 - **What it does:** Sets the random number generator seed used across the pipeline (NumPy RNG). This controls stochastic choices like condition assignment, LOS draws, follow-up creation, charge variation, hospital/ZIP selection, etc.
 - With the same inputs (CLI args, ZIP pool, code version) and the same --seed, you’ll get the same dataset. The default seed if omitted is 42
