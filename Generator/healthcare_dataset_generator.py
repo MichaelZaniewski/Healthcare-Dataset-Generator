@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-# Standalone Healthcare Dataset Generator 
+# Standalone Healthcare Dataset Generator v13_10
+# - Embeds v13_2 (unaltered generation)
+# - Keeps prior fixes (age >= 0, charges >= 87 with LOS escalation)
+# - Adds visits.hospital_zipcode and visits.hospital_state
+# - Enforces: one hospital per patient; each hospital has a unique ZIP
+# - Patient ZIPs forced to same state as hospital, prefer same 3-digit prefix; city names are real (from pool or prefix)
+# - Does NOT add new columns to patients unless they already exist (city/state filled only if present)
+# - Extended validation to ensure state match and city presence
 
 import argparse, os, sys, re, json, glob, subprocess, tempfile, base64
 from pathlib import Path
