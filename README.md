@@ -7,7 +7,7 @@ A Python-based generator that creates unique relational healthcare datasets for 
 ## Background and Overview
 The U.S. healthcare system generates massive volumes of data spanning patients, treatments, and billing but real datasets are often inaccessible due to privacy laws like HIPAA. This project was created to bridge that gap by providing a safe, realistic environment for healthcare analytics and data visualization.
 
-This healthcare dataset generator was designed in tandem with OpenAI GPT 5 - Thinking Model; implementing realistic clinical, operational, and billing rules, then translating them into a single Python generator that produces linked tables with a validation summary report to ensure data accuracy and efficacy.
+This healthcare dataset generator was designed in tandem with OpenAI's GPT 5 - Thinking Model; implementing realistic clinical, operational, and billing rules, then translating them into a single Python generator that produces linked tables with a validation summary report to ensure data accuracy and efficacy.
 
 The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations —  with **no real or sensitive data**. Each run is randomized under strict rules, so **no two datasets are identical**. It models `Patients`, `Visits`, and `Billing` tables with dynamic logic for severity, follow-ups, and payment behavior, ensuring every run produces a unique, validated dataset ready for SQL or Tableau analysis.
 
