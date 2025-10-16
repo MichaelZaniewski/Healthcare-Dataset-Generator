@@ -19,46 +19,54 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
 - Includes some intentional data formatting errors to simulate messy data, though not much effort was put into this as the dataset is intended to be mostly analysis ready.
 - Employes a built-in validator that produces a summary report after generation to ensure logic is adheared to.
 
+## Generation Logic:
+### Relational Model
+  - Three linked tables — **Patients → Visits ↔ Billing (1:1)** — mirror an EHR + revenue-cycle flow.
+  - Stable primary/foreign keys for clean SQL joins and BI (star-schema friendly).
 
-## Dataset Logic
-## Zipcodes
-- Patient zipcodes must match state they blong to.
-- The hospital a patient belongs to is in the same state as their own. 
-- A Hospital must have only one zipcode.
-- Every patient must be assigned a hospital.
-- Subsequently, the zipcode count during generation affects quantity of hospitals.
+### Demographics & Geography
+  - U.S.-style names (optional prefixes), phones, addresses.
+  - ZIP/state/city sourced from a configurable **ZIP pool** CSV (flexible headers accepted: `zipcode|zip|postal_code`, `state|state_id`, `city`).
+  - **ZIP rules:** patient ZIP must match its state; each hospital has **one** ZIP; every patient is assigned a hospital in the **same state**. The size of the ZIP pool influences how many hospitals are generated.
 
-### LOS & Severity
-- LOS ranges by condition category (minor/acute/chronic/complex)
-- Higher severity generally longer LOS; minor + mild can be same-day (tunable)
+### Conditions, Severity, Treatments
+  - **17+ conditions** with age/clinical gating; severity tiers (Normal/Mild/Moderate/Severe).
+  - Treatments are **separate from medications** (life-like drug names, dosage, frequency).
+  - Recurrence rules: chronic (e.g., diabetes) tend to multiple visits; acute (e.g., flu) resolve quickly.
+  - Continuity of care: follow-ups prefer **same doctor + hospital**; otherwise same hospital, or at least same state.
 
-### Billing & Payments
-- Charges scale by condition/severity/LOS with hospital multipliers
-- Payment plan: **Full** (+30d) or **Incremental** (+12mo)
-- Status derived deterministically: `Paid`, `Late-Paid`, `In-progress`, `Late-Unpaid`
-- Follow-ups trend downward vs first charge (small bumps allowed)
+### Visits, LOS & Same-Day Logic
+  - Visit counts vary by condition/severity; **LOS** bounded by condition-specific ranges.
+  - **Same-day discharges** are probabilistic and concentrated in mild/minor cases (tunable).
+  - Follow-up LOS trends short (≤2 days).
+  - Final column order in **Visits** normalizes hospital fields: `hospital → hospital_state → hospital_zipcode → room_number`.
+
+### Billing & Payments (strict 1:1 with Visits)
+  - Each visit generates exactly **one** billing record with charges, insurance coverage, and patient responsibility.
+  - Charges scale by condition/severity/LOS with hospital multipliers; follow-ups trend **lower** than initial visits (small realistic bumps allowed).
+  - Payment plans: **Full** (+30d) or **Incremental** (+12mo) → deterministic expected/actual dates → status: `Paid`, `Late-Paid`, `In-progress`, `Late-Unpaid`.
 
 ### Heterogeneity & Randomness
-- Hospital profiles: same-day bias, late-payment multiplier, charge multiplier
-- Doctor styles: same-day and medication bias
-- Insurance effects (coverage %, payment risk)
-- Uninsured + high charge (> $10k) → higher **Late-Paid** likelihood
+  - Hospital profiles: same-day bias, late-payment multiplier, charge multiplier.
+  - Doctor styles: same-day and medication bias.
+  - Insurance effects: coverage % and payment risk.
+  - Seed-driven randomness (`--seed`) for reproducible yet varied datasets.
 
-### Clinical Logic Highlights
-- Pediatric gating (adult-only conditions blocked under 18)
-- Childbirth: **Female**, ages **25–50**; ≤2 childbirth visits; postpartum follow-ups use postpartum treatments
-- Follow-ups for same condition inherit **doctor/hospital**, LOS ≤ 2
-- Distinct conditions per patient: **1–2 common**, max 3
-  
+### Export & File Hygiene
+  - Post-generation normalizations (non-destructive):
+    - **Patients:** `city` placed immediately after `address`.
+    - **Visits:** `date_of_birth` removed (lives in Patients); hospital fields ordered as above.
+    - **Billing:** `name` removed to avoid dimension duplication.
+  - CSVs are Postgres-friendly (ISO-like `YYYY/MM/DD`) with stable column order.
+
 ### Validation
-Automatic checks (saved to `validation_report.txt`):
-- IDs uniqueness and 1:1 visit↔billing
-- Age correctness (today & per-visit), single blood type per patient
-- Insurance rule: no policy without provider
-- Pediatric + childbirth gating
-- Follow-up consistency (doctor/hospital) and LOS ≤ 2
-- Flu/Pneumonia ≤ 3/year; Heart disease bypass ≤ 1
-- Billing trend sanity; no future payment dates
+  - Automatic checks (printed and saved to **`validation_summary.json`**):
+    - ID uniqueness; **Visits↔Billing 1:1** mapping.
+    - LOS/age logic; pediatric/childbirth gating.
+    - Insurance rule: no policy without provider.
+    - Follow-up consistency (doctor/hospital; LOS ≤2).
+    - Date sanity (no future/invalid dates relative to `--today`).
+
 
 
 ## How to Run
@@ -99,7 +107,11 @@ Automatic checks (saved to `validation_report.txt`):
      - billing.csv
      - validation_summary.json
     
-    More info:
-   you can add a --seed clause
-   seed defaults to 42
-keying in the same patient count, zip count, date, and seed as someone else will produce the same dataset.
+### -- Seed Input
+- You can add a --seed clause in the generation code to regenerate a dataset previously created.
+- **What it does:** Sets the random number generator seed used across the pipeline (NumPy RNG). This controls stochastic choices like condition assignment, LOS draws, follow-up creation, charge variation, hospital/ZIP selection, etc.
+- With the same inputs (CLI args, ZIP pool, code version) and the same --seed, you’ll get the same dataset. The default seed if omitted is 42
+- How to use:
+    ```
+    python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"   --seed 8
+    ```
