@@ -76,10 +76,16 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
 2. Download the Generator Folder:
    - For the download, click [here](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/releases/tag/v1.0).
    - Place the folder on your desktop.
-   - What's in the folder: The .py generator and a .csv of U.S. zipcodes (essential for large dataset creation) 
+   - What's in the folder: The .py generator and a .csv of U.S. zipcodes (essential for large dataset creation)  
+
+3. Open CMD and navigate to that folder
+       ```
+       cd /d "[DRIVE-LETTER-HERE]:\Users\[USERNAME-HERE]\Desktop\Generator"
+       ```
+   - Your drive letter is most likely C
 
 4. Install Required Libraries
-   - Open a terminal or Command Prompt in that folder and run:
+   - Once command prompt is open in that folder run:
        ```
        pip install pandas numpy faker
        ```
@@ -88,14 +94,14 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
        ```
        python healthcare_dataset_generator.py   --patients 100   --today YYYY-MM-DD   --zip-target 10   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
-7. Increase the Dataset Size
+6. Increase the Dataset Size
    - For larger dataset generation: Patient count, today's date, and distinct zipcode fields are all customizable. Change at will.
        ```
        python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
    - Note: Keep in mind that an adjustment to patient count (Patient table) has an exponential impact on the Visit and Billing tables because its a one-to-many relationship. For instance, a 50K patient table may generate 225K records in both the Visit and Billing tables. Scale up slowly to ensure your computer can handle the computation. Generation may take a while, be patient. The validation_summary must rescan all rows and calculate metrics and takes additional time to populate after the tables have been exported to the output folder.
      
-8. View the Results
+7. View the Results
    - Your output folder will contain
      - patients.csv
      - visits.csv
@@ -107,6 +113,9 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
 - **What it does:** Sets the random number generator seed used across the pipeline (NumPy RNG). This controls stochastic choices like condition assignment, LOS draws, follow-up creation, charge variation, hospital/ZIP selection, etc.
 - With the same inputs (CLI args, ZIP pool, code version) and the same --seed, you’ll get the same dataset. The default seed if omitted is 42
 - How to use:
-    ```
-    python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"   --seed 8
-    ```
+       ```
+       python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"   --seed 8
+       ```
+
+## Issues
+If there are any issues please let me know in the issues tab.
