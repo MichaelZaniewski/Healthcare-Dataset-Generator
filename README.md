@@ -7,18 +7,18 @@ A Python-based generator that creates unique relational healthcare datasets for 
 ## Background and Overview
 The U.S. healthcare system generates massive volumes of data spanning patients, treatments, and billing but real datasets are often inaccessible due to privacy laws like HIPAA. This project was created to bridge that gap by providing a safe, realistic environment for healthcare analytics and data visualization.
 
-This healthcare dataset generator was designed in tandem with OpenAI GPT 5 - Thinking Model; implimenting realistic clinical, operational, and billing rules, then translating them into a single Python generator that produces a linked `patients`, `visits`, and `billing` tables with a validation summary report to ensure data accuracy and efficacy.
+This healthcare dataset generator was designed in tandem with OpenAI GPT 5 - Thinking Model; implimenting realistic clinical, operational, and billing rules, then translating them into a single Python generator that produces a linked tables with a validation summary report to ensure data accuracy and efficacy.
 
 The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations —  with **no real or sensitive data**. Each run is randomized under strict rules, so **no two datasets are identical**. It models `Patients`, `Visits`, and `Billing` tables with dynamic logic for severity, follow-ups, and payment behavior, ensuring every run produces a unique, validated dataset ready for SQL or Tableau analysis.
 
 The generator is a reproducible, seed-driven engine that builds a U.S.-style hospital dataset end-to-end with configurable geography and time windows. It assigns facilities and patients using a ZIP/state pool, enforces pediatric/adult gating, and bounds length-of-stay by condition-specific ranges rather than one-size averages. Visit timelines are constructed first, then downstream billing is derived deterministically from those timelines (e.g., plan = Full vs Incremental → expected dates → status transitions), so payment outcomes are explainable from inputs. Severity tiers influence tests vs. procedures, and recurrence rules drive whether a case becomes a single episode or a series of returns. The generator emits clean, SQL, excel, and tableau friendly CSVs plus a validation JSON that checks ID integrity, visit-billing 1:1 mapping, age logic, LOS fences, and payment status consistency. Runs are tunable via CLI flags (patients, anchor date, ZIP diversity, seed), letting you create bite-size samples for demos or larger datasets for analytics and dashboarding. **The data is always synthetic, never real personal information.**
 
 ## Key Features
-- Multi-table relational design (`patients`, `visits`, `billing`) with strict PK/FK consistency.
+- Multi-table relational design with strict PK/FK consistency.
 - Realistic clinical logic: condition gating, LOS rules, same-day probabilities, follow-up inheritance (doctor/hospital).
 - Billing realism: charges scale by condition/severity/LOS; payment plans & deterministic statuses.
 - Tunable parameters for patient count, dates, distinct zipcode count, and seed generation number. 
-- Utilizes real US zipcodes for easy mapping in Tableau for an additionnal layer of analytical opportunity.
+- Utilizes real U.S. zipcodes for easy mapping in Tableau for an additionnal layer of analytical opportunity.
 - Includes some intentional data formatting errors to simulate messy data, though not much effort was put into this as the dataset is intended to be mostly analysis ready.
 - Employes a built-in validator that produces a summary report after generation to ensure logic is adheared to.
 
@@ -66,7 +66,7 @@ The generator is a reproducible, seed-driven engine that builds a U.S.-style hos
 ## How to Run
 1. Install Python
    - Download & install Python (includes pip): https://www.python.org/downloads/
-   - On windows installer: check "Add Python to PATH"
+   - On Windows installer: check "Add Python to PATH"
    - Once installed, verify by opening Command Prompt or Terminal and typing:
        ```
        python --version
@@ -76,7 +76,7 @@ The generator is a reproducible, seed-driven engine that builds a U.S.-style hos
 2. Download the Generator Folder:
    - For the download, click [here](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/releases/tag/v1.0).
    - Place the folder on your desktop.
-   - Whats in the folder: The .py generator and a .csv of US zipcodes (essential for large dataset creation) 
+   - What's in the folder: The .py generator and a .csv of U.S. zipcodes (essential for large dataset creation) 
 
 4. Install Required Libraries
    - Open a terminal or Command Prompt in that folder and run:
@@ -89,7 +89,7 @@ The generator is a reproducible, seed-driven engine that builds a U.S.-style hos
        python healthcare_dataset_generator.py   --patients 100   --today YYYY-MM-DD   --zip-target 10   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
 7. Increase the Dataset Size
-   - For larger dataset generation: Patient count, todays date, and distinct zipcode fields are all customizable. Change at will.
+   - For larger dataset generation: Patient count, today's date, and distinct zipcode fields are all customizable. Change at will.
        ```
        python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
