@@ -79,30 +79,29 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
    - What's in the folder: The .py generator and a .csv of U.S. zipcodes (essential for large dataset creation)  
 
 3. Open CMD and navigate to that folder
-   
+   - Your drive letter is most likely C
        ```
        cd /d "[DRIVE-LETTER-HERE]:\Users\[USERNAME-HERE]\Desktop\Generator"
        ```
-   - Your drive letter is most likely C
 
-4. Install Required Libraries
+5. Install Required Libraries
    - Once command prompt is open in that folder run:
        ```
        pip install pandas numpy faker
        ```
-5. Run a Small Test Sample
+6. Run a Small Test Sample
    - To generate a quick 100-patient sample, use this (make sure to input the date!):
        ```
        python healthcare_dataset_generator.py   --patients 100   --today YYYY-MM-DD   --zip-target 10   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
-6. Increase the Dataset Size
+7. Increase the Dataset Size
    - For larger dataset generation: Patient count, today's date, and distinct zipcode fields are all customizable. Change at will.
        ```
        python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
    - Note: Keep in mind that an adjustment to patient count (Patient table) has an exponential impact on the Visit and Billing tables because its a one-to-many relationship. For instance, a 50K patient table may generate 225K records in both the Visit and Billing tables. Scale up slowly to ensure your computer can handle the computation. Generation may take a while, be patient. The validation_summary must rescan all rows and calculate metrics and takes additional time to populate after the tables have been exported to the output folder.
      
-7. View the Results
+8. View the Results
    - Your output folder will contain
      - patients.csv
      - visits.csv
