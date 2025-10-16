@@ -75,7 +75,7 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
     
 2. Download the Generator Folder:
    - For the download, click [here](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/releases/tag/v1.0).
-   - Place the folder on your desktop.
+   - Place the folder on your desktop (easiest)
    - What's in the folder: The .py generator and a .csv of U.S. zipcodes (essential for large dataset creation)  
 
 3. Open CMD and navigate to that folder
@@ -107,11 +107,26 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
      - visits.csv
      - billing.csv
      - validation_summary.json
-    
-### Seed Input
+
+## Customizable Metrics
+### Patient Count
+- -- patients (input number here)
+- Controls the quantity of distinct patients in the dataset.
+- If no patient quantity is specified, it defaults to 1000.
+
+### Todays Date
+- -- today YYYY-MM-DD
+- Controls payment dates and other important metrics to ensure no future dates exist in the dataset.
+
+### Zip Target
+- -- zip-target (input number here)
+- Controls the quantity of distinct zipcodes.
+- The zipcode csv file is needed to run the generator properly. It can work without it but distinct zipcodes will be capped to predetermined values in the script, as opposed to a random selection of 10,000 possible codes. Keep the zipcode csv in the same folder as the generator to ensure proper generation.
+  
+### Seed
 - You can add a --seed clause in the generation code to regenerate a dataset previously created.
 - **What it does:** Sets the random number generator seed used across the pipeline (NumPy RNG). This controls stochastic choices like condition assignment, LOS draws, follow-up creation, charge variation, hospital/ZIP selection, etc.
-- With the same inputs (CLI args, ZIP pool, code version) and the same --seed, you’ll get the same dataset. The default seed if omitted is 42
+- With the same inputs: patient count, date, zip-target, python code version, and --seed, you’ll get the same dataset. The default seed, if omitted, is 42
 - How to use:
        ```
        python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"   --seed 8
