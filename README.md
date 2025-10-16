@@ -18,7 +18,7 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
 - Realistic clinical logic: condition gating, LOS rules, same-day probabilities, follow-up inheritance (doctor/hospital).
 - Billing realism: charges scale by condition/severity/LOS; payment plans & deterministic statuses.
 - Tunable parameters for patient count, dates, distinct zipcode count, and seed generation number. 
-- Utilizes real U.S. zipcodes for easy mapping in Tableau for an additionnal layer of analytical opportunity.
+- Utilizes real U.S. zipcodes for easy mapping in Tableau for an additional layer of analytical opportunity.
 - Includes some intentional data formatting errors to simulate messy data, though not much effort was put into this as the dataset is intended to be mostly analysis ready.
 - Employes a built-in validator that produces a summary report after generation to ensure logic is adheared to.
 
