@@ -79,6 +79,7 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
    - What's in the folder: The .py generator and a .csv of U.S. zipcodes (essential for large dataset creation)  
 
 3. Open CMD and navigate to that folder
+   
        ```
        cd /d "[DRIVE-LETTER-HERE]:\Users\[USERNAME-HERE]\Desktop\Generator"
        ```
