@@ -22,6 +22,14 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
 - Includes some intentional data formatting errors to simulate messy data, though not much effort was put into this as the dataset is intended to be mostly analysis ready.
 - Employes a built-in validator that produces a summary report after generation to ensure logic is adhered to.
 
+## Who Is This For?
+
+- **Data analysts & portfolio builders:** add a healthcare analysis to your portfolio; practice Structured Query Language (SQL), joins, Key Performance Indicators (KPIs), and dashboards on realistic data.
+- **Data scientists & Machine Learning (ML) practitioners:** build features from Patients/Visits/Billing, create labels (e.g., payment status), and train classification/forecasting models.
+- **Educators, bootcamps, and students:** create graded assignments with a shared seed for reproducible results.
+- **Business Intelligence (BI) developers / dashboard designers:** prototype Tableau/Power BI dashboards with realistic KPIs and dimensions.
+- **Healthcare operations & revenue cycle leaders:** sandbox Length of Stay (LOS), discharge, and cash-flow scenarios without touching private healthcare information.
+
 ## Generation Logic:
 ### Relational Model
   - Three linked tables — **Patients → Visits ↔ Billing (1:1)** — mirror an EHR + revenue-cycle flow.
