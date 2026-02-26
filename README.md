@@ -1,4 +1,4 @@
-<img width="3000" height="2015" alt="Python" src="https://github.com/user-attachments/assets/a5ce600f-481f-414d-9fee-830ea760c69d" />
+<img width="3000" height="1375" alt="Image" src="https://github.com/user-attachments/assets/6a9467e7-4936-4db7-9a8a-340d915ab10c" />
 
 # Healthcare-Dataset-Generator
 
