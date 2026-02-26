@@ -2,10 +2,12 @@
 
 # Healthcare-Dataset-Generator
 
+# Healthcare-Dataset-Generator
+
 A Python-based generator that creates unique relational healthcare datasets for analytics and machine learning. 
 
 ## Background and Overview
-The U.S. healthcare system generates massive volumes of data spanning patients, treatments, and billing but real datasets are often inaccessible due to privacy laws like HIPAA. This project was created to bridge that gap by providing a safe, realistic environment for healthcare analytics and data visualization.
+The U.S. healthcare system generates massive volumes of data spanning patients, treatments, and billing but real datasets are often inaccessible due to privacy laws like HIPAA (Health Insurance Portability and Accountability Act). This project was created to bridge that gap by providing a safe, realistic environment for healthcare analytics and data visualization.
 
 This healthcare dataset generator was designed in tandem with OpenAI's GPT 5 - Thinking Model; implementing realistic clinical, operational, and billing rules, then translating them into a single Python generator that produces linked tables with a validation summary report to ensure data accuracy and efficacy.
 
@@ -13,11 +15,27 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
 
 The generator is a reproducible, seed-driven engine that builds a dataset end-to-end with configurable geography and time windows. It assigns facilities and patients using a ZIP/state pool, enforces pediatric/adult gating, and bounds length-of-stay by condition-specific ranges rather than one-size averages. Visit timelines are constructed first, then downstream billing is derived deterministically from those timelines (e.g., plan = Full vs Incremental → expected dates → status transitions), so payment outcomes are explainable from inputs. Severity tiers influence tests vs. procedures, and recurrence rules drive whether a case becomes a single episode or a series of returns. The generator emits clean, SQL, excel, and tableau friendly CSVs plus a validation JSON that checks ID integrity, visit-billing 1:1 mapping, age logic, LOS fences, and payment status consistency. Runs are tunable via CLI flags (patients, anchor date, ZIP diversity, seed), letting you create bite-size samples for demos or larger datasets for analytics and dashboarding.
 
+## Release Notes
+### v1.1 (Locality + Single-Hospital Mode)
+- Added optional single-hospital mode so you can anchor the dataset to one hospital (useful for breach simulations and org-specific analysis).
+- Added locality controls to skew patient ZIP assignment around a hospital ZIP while still allowing some out-of-state patients (realistic over multi-year timelines).
+- Added new CLI flags:
+  - `--single-hospital`
+  - `--hospital-name`
+  - `--hospital-state`
+  - `--hospital-zipcode`
+  - `--local-share`
+  - `--local-top-n`
+  - `--local-decay`
+  - `--outstate-neighbor-share`
+- Backwards compatible: if you do not use the new locality flags, nationwide multi-hospital behavior remains the default.
+
 ## Key Features
 - Multi-table relational design with strict PK/FK consistency.
 - Realistic clinical logic: condition gating, LOS rules, same-day probabilities, follow-up inheritance (doctor/hospital).
 - Billing realism: charges scale by condition/severity/LOS; payment plans & deterministic statuses.
 - Tunable parameters for patient count, dates, distinct zipcode count, and seed generation number. 
+- Optional single-hospital locality mode to create a realistic service area around one hospital ZIP (with an out-of-state tail).
 - Utilizes real U.S. zipcodes for easy mapping in Tableau for an additional layer of analytical opportunity.
 - Includes some intentional data formatting errors to simulate messy data, though not much effort was put into this as the dataset is intended to be mostly analysis ready.
 - Employes a built-in validator that produces a summary report after generation to ensure logic is adhered to.
@@ -38,7 +56,7 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
 ### Demographics & Geography
   - U.S.-style names (optional prefixes), phones, addresses.
   - ZIP/state/city sourced from a configurable **ZIP pool** CSV (flexible headers accepted: `zipcode|zip|postal_code`, `state|state_id`, `city`).
-  - **ZIP rules:** patient ZIP must match its state; each hospital has **one** ZIP; every patient is assigned a hospital in the **same state**. The size of the ZIP pool influences how many hospitals are generated.
+  - **ZIP rules:** patient ZIP must match its state; each hospital has **one** ZIP. In nationwide mode, every patient is assigned a hospital in the **same state**. In single-hospital locality mode, the hospital is anchored to one state (and optional hospital ZIP) and a configurable portion of patients can be out-of-state. The size of the ZIP pool influences how many hospitals are generated in nationwide mode.
 
 ### Conditions, Severity, Treatments
   - **17+ conditions** with age/clinical gating; severity tiers (Normal/Mild/Moderate/Severe).
@@ -108,7 +126,14 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
        python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
    - Note: Keep in mind that an adjustment to patient count (Patient table) has an exponential impact on the Visit and Billing tables because its a one-to-many relationship. For instance, a 50K patient table may generate 225K records in both the Visit and Billing tables. Scale up slowly to ensure your computer can handle the computation. Generation may take a while, be patient. The validation_summary must rescan all rows and calculate metrics and takes additional time to populate after the tables have been exported to the output folder.
-     
+
+7b. Single Hospital + Locality Mode (New)
+   - Example: NYC-based hospital (Midtown Manhattan 10036) with 83% of patients in NY and 17% out-of-state:
+       ```
+       python healthcare_dataset_generator.py   --patients 20000   --today YYYY-MM-DD   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"   --single-hospital   --hospital-state NY   --hospital-zipcode 10036   --local-share 0.83   --local-top-n 400   --local-decay 200   --outstate-neighbor-share 0.70
+       ```
+   - If you omit `--hospital-zipcode` but keep `--hospital-state NY`, the generator will automatically pick a NY hospital ZIP from the ZIP pool.
+
 8. View the Results
    - Your output folder will contain
      - patients.csv
@@ -130,7 +155,8 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
 - -- zip-target (input number here)
 - Controls the quantity of distinct zipcodes.
 - The zipcode csv file is needed to run the generator properly. It can work without it but distinct zipcodes will be capped to predetermined values in the script, as opposed to a random selection of 10,000 possible codes. Keep the zipcode csv in the same folder as the generator to ensure proper generation.
-  
+- Note: In single-hospital locality mode, the size of the local footprint is primarily controlled by `--local-top-n` and `--local-decay` (not `--zip-target`).
+
 ### Seed
 - You can add a --seed clause in the generation code to regenerate a dataset previously created.
 - **What it does:** Sets the random number generator seed used across the pipeline (NumPy RNG). This controls stochastic choices like condition assignment, LOS draws, follow-up creation, charge variation, hospital/ZIP selection, etc.
@@ -140,6 +166,24 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
        ```
        python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"   --seed 8
        ```
+
+### Locality Mode (New)
+- --single-hospital
+  - Forces the entire dataset to use one hospital.
+- --hospital-name "Hospital Name Here"
+  - Optional override for the hospital name when using `--single-hospital`.
+- --hospital-state NY
+  - Anchors the hospital to a state (turns on locality mode).
+- --hospital-zipcode 10036
+  - Optional hospital ZIP anchor. If omitted, the generator auto-selects a ZIP in the hospital state.
+- --local-share 0.83
+  - Percent of patients assigned in the hospital state (example 0.83 means 83% in-state).
+- --local-top-n 400
+  - How many in-state ZIPs are considered the “local catchment” pool (smaller = tighter footprint).
+- --local-decay 200
+  - Controls clustering tightness around the hospital ZIP (smaller = tighter clustering).
+- --outstate-neighbor-share 0.70
+  - When selecting out-of-state patients, biases them toward nearby states rather than random nationwide.
 
 ## Issues
 If there are any issues please let me know in the issues tab.
