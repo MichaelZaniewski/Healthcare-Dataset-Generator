@@ -159,11 +159,7 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
 - You can add a --seed clause in the generation code to regenerate a dataset previously created.
 - **What it does:** Sets the random number generator seed used across the pipeline (NumPy RNG). This controls stochastic choices like condition assignment, LOS draws, follow-up creation, charge variation, hospital/ZIP selection, etc.
 - With the same inputs: patient count, date, zip-target, python code version, and --seed, you’ll get the same dataset. The default seed, if omitted, is 42
-- How to use:
-  
-       ```
-       python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"   --seed 8
-       ```
+
 
 ### Locality Mode (New)
 - --single-hospital
