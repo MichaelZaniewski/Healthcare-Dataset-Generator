@@ -14,7 +14,7 @@ The generator programmatically creates realistic, U.S.-based healthcare data tha
 The generator is a reproducible, seed-driven engine that builds a dataset end-to-end with configurable geography and time windows. It assigns facilities and patients using a ZIP/state pool, enforces pediatric/adult gating, and bounds length-of-stay by condition-specific ranges rather than one-size averages. Visit timelines are constructed first, then downstream billing is derived deterministically from those timelines (e.g., plan = Full vs Incremental → expected dates → status transitions), so payment outcomes are explainable from inputs. Severity tiers influence tests vs. procedures, and recurrence rules drive whether a case becomes a single episode or a series of returns. The generator emits clean, SQL, excel, and tableau friendly CSVs plus a validation JSON that checks ID integrity, visit-billing 1:1 mapping, age logic, LOS fences, and payment status consistency. Runs are tunable via CLI flags (patients, anchor date, ZIP diversity, seed), letting you create bite-size samples for demos or larger datasets for analytics and dashboarding.
 
 ## Release Notes
-### v1.1 (Locality + Single-Hospital Mode)
+### v2 (Locality + Single-Hospital Mode)
 - Added optional single-hospital mode so you can anchor the dataset to one hospital (useful for breach simulations and org-specific analysis).
 - Added locality controls to skew patient ZIP assignment around a hospital ZIP while still allowing some out-of-state patients (realistic over multi-year timelines).
 - Added new CLI flags:
