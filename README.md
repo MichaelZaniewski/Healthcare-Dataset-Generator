@@ -118,14 +118,14 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
        ```
        python healthcare_dataset_generator.py   --patients 100   --today YYYY-MM-DD   --zip-target 10   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
-7a. Increase the Dataset Size
+7. Run a Small Test Sample
    - For larger dataset generation: Patient count, today's date, and distinct zipcode fields are all customizable. Change at will.
        ```
        python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
    - Note: Keep in mind that an adjustment to patient count (Patient table) has an exponential impact on the Visit and Billing tables because its a one-to-many relationship. For instance, a 50K patient table may generate 225K records in both the Visit and Billing tables. Scale up slowly to ensure your computer can handle the computation. Generation may take a while, be patient. The validation_summary must rescan all rows and calculate metrics and takes additional time to populate after the tables have been exported to the output folder.
 
-7b. Single Hospital + Locality Mode (New)
+   Single Hospital + Locality Mode (New)
    - Example: NYC-based hospital (Midtown Manhattan 10036) with 83% of patients in NY and 17% out-of-state:
        ```
        python healthcare_dataset_generator.py   --patients 20000   --today YYYY-MM-DD   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"   --single-hospital   --hospital-state NY   --hospital-zipcode 10036   --local-share 0.83   --local-top-n 400   --local-decay 200   --outstate-neighbor-share 0.70
