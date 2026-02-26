@@ -179,5 +179,15 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
 - --outstate-neighbor-share 0.70
   - When selecting out-of-state patients, biases them toward nearby states rather than random nationwide.
 
+#### Examples
+- Smaller community hospital feel
+```
+--patients 20000 --local-share 0.90 --local-top-n 150 to 250 --local-decay 120 to 200
+```
+- Large regional / academic feel
+```
+--patients 50000 --local-share 0.80 to 0.85 --local-top-n 400 to 800 --local-decay 200 to 450
+```
+
 ## Issues
 If there are any issues please let me know in the issues tab.
