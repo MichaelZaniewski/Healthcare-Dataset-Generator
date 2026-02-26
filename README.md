@@ -119,6 +119,8 @@ The generator is a reproducible, seed-driven engine that builds a dataset end-to
        python healthcare_dataset_generator.py   --patients 100   --today YYYY-MM-DD   --zip-target 10   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
        ```
 7. Run a Small Test Sample
+   
+   Multi-Hospital + Nationwide
    - For larger dataset generation: Patient count, today's date, and distinct zipcode fields are all customizable. Change at will.
        ```
        python healthcare_dataset_generator.py   --patients 50000   --today YYYY-MM-DD   --zip-target 5800   --zip-pool-file ".\us_zip_pool_10k_with_state.csv"   --outdir ".\Dataset"
