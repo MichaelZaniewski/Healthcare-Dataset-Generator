@@ -2,7 +2,7 @@
 
 # Healthcare-Dataset-Generator
 
-A Python-based generator that creates unique relational healthcare datasets for analytics and machine learning. 
+A Python-based data generator that creates unique relational healthcare datasets for analytics and machine learning. 
 
 ## Background and Overview
 The U.S. healthcare system generates massive volumes of data spanning patients, treatments, and billing but real datasets are often inaccessible due to privacy laws like HIPAA (Health Insurance Portability and Accountability Act). This project was created to bridge that gap by providing a safe, realistic environment for healthcare analytics and data visualization.
